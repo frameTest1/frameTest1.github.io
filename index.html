@@ -28,11 +28,13 @@
                 console.log('yes',event,getData.value)
                 event.preventDefault()
                 var a  = document.createElement('p')
+		    
                 a.innerHTML = getData.value
+		    var requestBody = {"u_message": a.innerHTML}; 
                 getData.value = ""
                 document.getElementById('content').appendChild(a)
 
-                var requestBody = {"u_message": getData.value}; 
+                
 
 
 var client=new XMLHttpRequest();
