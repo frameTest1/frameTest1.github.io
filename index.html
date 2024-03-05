@@ -28,16 +28,25 @@
                 console.log('yes',event,getData.value)
                 event.preventDefault()
                 var a  = document.createElement('p')
-		    
+		    message(getData.value)
                 a.innerHTML = getData.value
-		    var requestBody = {"u_message": a.innerHTML}; 
+		    
                 getData.value = ""
                 document.getElementById('content').appendChild(a)
-
+	    }
                 
 
 
-var client=new XMLHttpRequest();
+
+
+            }
+
+
+	    function sendMessage(message){
+		    var client=new XMLHttpRequest();
+
+
+		    var requestBody = {"u_message": message}; 
 client.open("post","https://dev184909.service-now.com/api/now/table/u_message");
 
 client.setRequestHeader('Accept','application/json');
@@ -52,17 +61,17 @@ client.onreadystatechange = function() {
 	}
 }; 
 
-if(a.innerHTML>2){
-    client.send(JSON.stringify(requestBody));
-}
 
-            }
+    client.send(JSON.stringify(requestBody));
+
+
+	    }
 
 
             function getMessage(){
 
             }
-        }
+        
 
 
     
