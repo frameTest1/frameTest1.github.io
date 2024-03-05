@@ -1,23 +1,71 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>File Downloader in JavaScript| CodingNepal</title>
-    <link rel="stylesheet" href="style.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>File Downloader</h1>
-        <p>Paste url of image, video, or pdf to download. This tool is made with vanilla javascript.</p>
-      </header>
-      <form action="#">
-        <input type="url" placeholder="Paste file url" required>
-        <button>Download File</button>
-      </form>
+    <title>Document</title>
+</head>
+<body onload="getMessage()">
+    <textarea id="message"  rows="4" cols="50" style="resize:none" value="">
+        
+
+    </textarea>
+
+    <div id="content">
+
     </div>
 
-    <script src="script.js"></script>
-  </body>
+
+
+    <script>
+        var getData = document.getElementById('message')
+
+        getData.addEventListener('keypress',callback)
+
+
+        function callback(event){
+            if(event.key == "Enter"){
+                console.log('yes',event,getData.value)
+                event.preventDefault()
+                var a  = document.createElement('p')
+                a.innerHTML = getData.value
+                getData.value = ""
+                document.getElementById('content').appendChild(a)
+
+                var requestBody = {"u_message": getData.value}; 
+
+
+var client=new XMLHttpRequest();
+client.open("post","https://dev184909.service-now.com/api/now/table/u_message");
+
+client.setRequestHeader('Accept','application/json');
+client.setRequestHeader('Content-Type','application/json');
+
+//Eg. UserName="admin", Password="admin" for this code sample.
+client.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i='));
+
+client.onreadystatechange = function() { 
+	if(this.readyState == this.DONE) {
+		//document.getElementById("response").innerHTML=this.status + this.response; 
+	}
+}; 
+
+if(a.innerHTML>2){
+    client.send(JSON.stringify(requestBody));
+}
+
+            }
+
+
+            function getMessage(){
+
+            }
+        }
+
+
+    
+
+
+    </script>
+</body>
 </html>
