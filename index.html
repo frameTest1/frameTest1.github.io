@@ -88,12 +88,8 @@ xhr.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i='))
 xhr.onreadystatechange = function() { 
 	if(this.readyState == this.DONE) {
 	//document.getElementById("response").innerHTML=this.status + this.response; 
-	}
-}; 
-xhr.send(requestBody);
-
-		     
-                            console.log()
+		
+                            console.log(typeof xhr.response,JSON.parse(xhr.response),xhr.response,)
 			    var data = typeof xhr.response== "string"?JSON.parse(xhr.response):xhr.response
 			    var responseData = data.result
 
@@ -102,6 +98,11 @@ xhr.send(requestBody);
 				     console.log(responseData[i].u_message)
 				     htmlContent.innerHTML = responseData[i].u_message
 				     document.getElementById('content').appendChild(a)
+	}
+}; 
+xhr.send(requestBody);
+
+		     
 			     
     }
             
