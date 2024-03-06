@@ -77,7 +77,7 @@ client.onreadystatechange = function() {
 		    var requestBody = ""; 
 
 var xhr=new XMLHttpRequest();
-xhr.open("get","https://dev184909.service-now.com/api/now/table/u_message?sysparm_limit=10");
+xhr.open("get","https://dev184909.service-now.com/api/now/table/u_message?sysparm_limit=1000");
 
 xhr.setRequestHeader('Accept','application/json');
 xhr.setRequestHeader('Content-Type','application/json');
@@ -105,6 +105,7 @@ xhr.send(requestBody);
 			     
     }
             }
+	    }
         
 
 
