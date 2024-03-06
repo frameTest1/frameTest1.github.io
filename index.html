@@ -92,9 +92,9 @@ xhr.onreadystatechange = function() {
 }; 
 xhr.send(requestBody);
 
-		     if (xhr.status === 200) {
-                            console.log(typeof xhr.response)
-			    var data = JSON.parse(xhr.response)
+		     
+                            console.log()
+			    var data = typeof xhr.response== "string"?JSON.parse(xhr.response):xhr.response
 			    var responseData = data.result
 
 			     for(var i in responseData){
@@ -104,7 +104,7 @@ xhr.send(requestBody);
 				     document.getElementById('content').appendChild(a)
 			     
     }
-            }
+            
 	    }
         
 
