@@ -59,14 +59,13 @@ client.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i=
 client.onreadystatechange = function() { 
 	if(this.readyState == this.DONE) {
 		//document.getElementById("response").innerHTML=this.status + this.response; 
+			    getMessage()
 	}
 }; 
 
 
     client.send(JSON.stringify(requestBody));
-    if(client.status == 201 || "201"){
-	    getMessage()
-    }
+ 
 
 
 	    }
