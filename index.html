@@ -88,8 +88,8 @@ xhr.onreadystatechange = function() {
 	if(this.readyState == this.DONE) {
 	//document.getElementById("response").innerHTML=this.status + this.response; 
 		
-                            console.log(typeof xhr.response,JSON.parse(xhr.response),xhr.response,)
-			    var data = typeof xhr.response== "string"?JSON.parse(xhr.response):xhr.response
+                            console.log(typeof this.response,JSON.parse(this.response),this.response)
+			    var data = typeof this.response== "string"?JSON.parse(this.response):this.response
 			    var responseData = data.result
 
 			     for(var i in responseData){
