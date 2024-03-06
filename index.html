@@ -83,11 +83,11 @@ xhr.setRequestHeader('Accept','application/json');
 xhr.setRequestHeader('Content-Type','application/json');
 
 //Eg. UserName="admin", Password="admin" for this code sample.
-xhr.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'admin'));
+xhr.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i='));
 
 xhr.onreadystatechange = function() { 
 	if(this.readyState == this.DONE) {
-		document.getElementById("response").innerHTML=this.status + this.response; 
+	//document.getElementById("response").innerHTML=this.status + this.response; 
 	}
 }; 
 xhr.send(requestBody);
