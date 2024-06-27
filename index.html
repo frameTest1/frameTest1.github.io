@@ -15,10 +15,16 @@
 
     </div>
 
+	<button onclick="send()">Send</button>
+
 
 
     <script>
         var getData = document.getElementById('message')
+
+	    function send() {
+            window.parent.postMessage('Hello Parent Frame!', '*');
+        }
 
         getData.addEventListener('keypress',callback)
 
