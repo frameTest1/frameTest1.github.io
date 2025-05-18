@@ -1,130 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!doctype html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/amazon-connect-streams/release/connect-streams-min.js"></script>
+    <style>
+        /* Adjust styles as needed for ServiceNow */
+        #ccp-container {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #ccc; /* Optional styling */
+        }
+        #wisdom-container {
+            width: 100%;
+            height: 600px; /* Adjust height as needed */
+        }
+    </style>
 </head>
 <body>
+    <div id="ccp-container"></div>
+    <div id="wisdom-container"></div>
+    <div id="customviews-container" style="display:none;"></div>
 
-	<div>
-  <h1>
-    IFRAME
-  </h1>
-  <iframe  frameborder="0" src="https://servicenow--instance.my.connect.aws" height="825px" width="100%" id="ae_iframe_bgkry9tc"></iframe>
-</div>
-    <textarea id="message"  rows="4" cols="50" style="resize:none" value="">
-        
+    <script type="text/javascript">
+        window.onload = function () {
+            const rootLogger = connect.getLog();
+            rootLogger.setLogLevel(connect.LogLevel.DEBUG);
+            rootLogger.setEchoLevel(connect.LogLevel.DEBUG);
 
-    </textarea>
+            rootLogger.debug("CDEBUG >> Page loaded");
 
-    <div id="content">
+            const connectUrl = " https://servicenow--instance.my.connect.aws";
+            const connectRegion = "us-east-1";
+            const ccpUrl = connectUrl + "/ccp";
 
-    </div>
+            try {
+                rootLogger.debug("CDEBUG >> Initializing CCP");
 
-	<button onclick="send()">Send</button>
+                connect.core.initCCP(document.getElementById("ccp-container"), {
+                    ccpUrl: ccpUrl,
+                    loginPopup: true,
+                    loginPopupAutoClose: true,
+                    region: connectRegion,
+                    softphone: {
+                        allowFramedSoftphone: true,
+                        disableRingtone: false,
+                        allowFramedVideoCall: true,
+                        allowEarlyGum: true
+                    },
+                    pageOptions: {
+                        enableAudioDeviceSettings: true,
+                        enablePhoneTypeSettings: true
+                    },
+                    ccpAckTimeout: 5000,
+                    ccpSynTimeout: 3000,
+                    ccpLoadTimeout: 10000
+                });
 
+                rootLogger.info("CDEBUG >> CCP initialized");
 
+                // Initialize Amazon Q (Wisdom)
+                connect.agentApp.initApp(
+                    "wisdom",
+                    "wisdom-container",
+                    connectUrl + "/wisdom-v2/",
+                    { style: "width:100%; height:100%;" }
+                );
+                rootLogger.info("CDEBUG >> Wisdom (Amazon Q) initialized");
 
-    <script>
-        var getData = document.getElementById('message')
+                // Subscribe to contact view event
+                connect.core.onViewContact(function (event) {
+                    rootLogger.debug("CDEBUG >> Viewing contact ID: " + event.contactId);
+                });
 
-	    function send() {
-            window.parent.postMessage('Hello Parent Frame!', '*');
-        }
-
-        getData.addEventListener('keypress',callback)
-
-
-        function callback(event){
-            if(event.key == "Enter"){
-                console.log('yes',event,getData.value)
-                event.preventDefault()
-              
-		    sendMessage(getData.value)
-
-		    
-		    
-                getData.value = ""
-                
-	    }
-                
-
-
-
-
+            } catch (error) {
+                console.error("CDEBUG >> Error during initialization:", error);
+                rootLogger.error("CDEBUG >> Error during initialization: " + error.message);
             }
-
-
-	    function sendMessage(message){
-		    var client=new XMLHttpRequest();
-
-
-		    var requestBody = {"u_message": message}; 
-client.open("post","https://dev184909.service-now.com/api/now/table/u_message");
-
-client.setRequestHeader('Accept','application/json');
-client.setRequestHeader('Content-Type','application/json');
-
-//Eg. UserName="admin", Password="admin" for this code sample.
-client.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i='));
-
-client.onreadystatechange = function() { 
-	if(this.readyState == this.DONE) {
-		//document.getElementById("response").innerHTML=this.status + this.response; 
-			    getMessage()
-	}
-}; 
-
-
-    client.send(JSON.stringify(requestBody));
- 
-
-
-	    }
-
-
-            function getMessage(){
-
-		    var requestBody = ""; 
-
-var xhr=new XMLHttpRequest();
-xhr.open("get","https://dev184909.service-now.com/api/now/table/u_message?sysparm_limit=1000");
-
-xhr.setRequestHeader('Accept','application/json');
-xhr.setRequestHeader('Content-Type','application/json');
-
-//Eg. UserName="admin", Password="admin" for this code sample.
-xhr.setRequestHeader('Authorization', 'Basic '+btoa('admin'+':'+'IXc5S7Ukw@i='));
-
-xhr.onreadystatechange = function() { 
-	if(this.readyState == this.DONE) {
-	//document.getElementById("response").innerHTML=this.status + this.response; 
-		
-                            console.log(typeof this.response,JSON.parse(this.response),this.response)
-			    var data = typeof this.response== "string"?JSON.parse(this.response):this.response
-			    var responseData = data.result
-
-			     for(var i in responseData){
-				  var htmlContent  = document.createElement('p')
-				     console.log(responseData[i].u_message)
-				     htmlContent.innerHTML = responseData[i].u_message
-				     document.getElementById('content').appendChild(a)
-	}
-}; 
-xhr.send(requestBody);
-
-		     
-			     
-    }
-            
-	    }
-        
-
-
-    
-
-
+        };
     </script>
 </body>
 </html>
